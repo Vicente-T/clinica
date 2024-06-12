@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Axios from 'axios'
+
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Home from './pages/Home'

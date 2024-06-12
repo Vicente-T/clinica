@@ -10,17 +10,22 @@ export default function Register() {
 
     const [usernameReg, setUsernameReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
+   
     
     
     
     const register = () => {
-      navigate("/login");
+
         Axios.post("http://localhost:3001/register", {
           username: usernameReg,
           password: passwordReg,
+          role: 'paciente',
         }).then((response) => {
           console.log(response);
         })
+        navigate("/login");
+        
+
     }
 
     return (

@@ -46,9 +46,11 @@ app.post('/register', (req, res) => {
   
     const username = req.body.username;
     const password = req.body.password;
+    const role = req.body.role;
+    
   
     if (!username || !password) {
-      return res.status(400).send({ error: 'Username and password are required' });
+      return res.status(400).send({ message: 'Username and password are required' });
     }
   
     bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -56,11 +58,13 @@ app.post('/register', (req, res) => {
         console.log(err);
       }
   
-      db.query("INSERT INTO users (`username`, `password`) VALUES (?, ?)", [username, hash], (err, result) => {
+      db.query("INSERT INTO users (`username`, `password`, `role`) VALUES (?, ?, ?)", [username, hash, role], (err, result) => {
         console.log(err);
-      });
+    });
     });
   });
+
+
 
 
 const verifyJWT = (req, res, next) => {
@@ -125,6 +129,46 @@ app.post('/login', (req, res) => {
       }
     });
   });
+
+  app.post('/consultas', (req, res) => {
+    console.log(req.body);
+  
+    const medico = req.body.medico;
+    const paciente = req.body.paciente;
+    const date = req.body.date;
+  
+    if (!medico || !paciente || !date) {
+      return res.status(400).send({ error: 'Medico, paciente, and date are required' });
+    }
+  
+    db.query("INSERT INTO consulta (`id_medicos`, `id_paciente`, `data`) VALUES (?, ?, ?)", [medico, paciente, date], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'Failed to register consulta' });
+      }
+  
+      console.log('Consulta registered successfully');
+      res.status(201).send({ message: 'Consulta registered successfully' });
+    });
+  });
+
+  app.get('/pacientes_ficha', (req, res) => {
+    const pacientename = req.params.name;
+  
+    db.query("SELECT * FROM pacientes WHERE id_pacientes = ?", [pacientename], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send({ error: 'Error fetching paciente record' });
+      }
+  
+      if (result.length === 0) {
+        return res.status(404).send({ error: 'Paciente not found' });
+      }
+  
+      res.send(result[0]); // Assuming only one patient record is returned
+    });
+  });
+
 
 app.listen(3001, () => {
     console.log('Server running on port 3001');

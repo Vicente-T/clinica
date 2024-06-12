@@ -58,7 +58,7 @@ export default function Login() {
       <input type="text" placeholder='username' onChange={(e)=>{setUsername(e.target.value)}}/>
       
       <input type="text" placeholder='password' onChange={(e)=>{setPassword(e.target.value)}} />
-      <button onClick={login}>Login</button>
+      <button onClick={login}>Login</button><button onClick={() => navigate("/register")}>Register</button>
 
       <h1>{loginStatus &&(<button onClick={userAuthenticated}>Check if autheticated</button>)}</h1>
 
