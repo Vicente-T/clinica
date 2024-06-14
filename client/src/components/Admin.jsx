@@ -12,6 +12,7 @@ export default function Admin() {
     const[dateReg, setDateReg] = useState("")
 
     const register = () => {
+      
 
         Axios.post("http://localhost:3001/register", {
           username: usernameReg,
@@ -37,6 +38,7 @@ export default function Admin() {
     }
 
     const registerConsulta = () => {
+      
     Axios.post("http://localhost:3001/consultas", {
       medico:medicoReg,
       paciente:pacienteReg,

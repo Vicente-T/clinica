@@ -152,12 +152,16 @@ app.post('/login', (req, res) => {
     });
   });
 
-  app.get('/pacientes_ficha', (req, res) => {
-    const pacientename = req.params.name;
+  app.get('/pacientesficha/:pacientename', (req, res) => {
+    const pacientename = req.params.pacientename; 
+
+    if (!pacientename) {
+      return res.status(400).send({ error: 'Missing pacientename parameter' });
+    }
   
-    db.query("SELECT * FROM pacientes WHERE id_pacientes = ?", [pacientename], (err, result) => {
+    db.query("SELECT * FROM pacientes WHERE pacientename = ?", [pacientename], (err, result) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).send({ error: 'Error fetching paciente record' });
       }
   
@@ -165,11 +169,63 @@ app.post('/login', (req, res) => {
         return res.status(404).send({ error: 'Paciente not found' });
       }
   
-      res.send(result[0]); // Assuming only one patient record is returned
+      res.send(result);
     });
   });
+
+  app.get('/medicoagenda/:medic', (req, res) => {
+    const medic = req.params.medic; 
+
+    if (!medic) {
+      return res.status(400).send({ error: 'Missing medic parameter' });
+    }
+  
+    db.query("SELECT * FROM consulta WHERE id_medicos = ?", [medic], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'Error fetching medic record' });
+      }
+  
+      if (result.length === 0) {
+        return res.status(404).send({ error: 'medic not found' });
+      }
+  
+      res.send(result);
+    });
+  });
+
+  app.get('/pacienteagenda/:paciente', (req, res) => {
+    const paciente = req.params.paciente; 
+
+    if (!paciente) {
+      return res.status(400).send({ error: 'Missing paciente parameter' });
+      alert('Paciente not found');
+      
+    }
+  
+    db.query("SELECT * FROM consulta WHERE id_paciente = ?", [paciente], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'Error fetching paciente record' });
+      }
+  
+      if (result.length === 0) {
+        return res.status(404).send({ error: 'paciente not found' });
+      }
+  
+      res.send(result);
+    });
+  });
+
+
+  
+
+
+  
+ 
 
 
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 })
+
