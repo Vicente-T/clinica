@@ -2,14 +2,18 @@ import React from "react";
 import { useState } from 'react'
 import Axios from 'axios'
 
+
 export default function Admin() {
     Axios.defaults.withCredentials = true
     const [usernameReg, setUsernameReg] = useState("");
     const [passwordReg, setPasswordReg] = useState("");
 
+   
+
     const[medicoReg, setMedicoReg] = useState("")
     const[pacienteReg, setPacienteReg] = useState("")
     const[dateReg, setDateReg] = useState("")
+    const[faramcosReg, setFaramcosReg] = useState("")
 
     const register = () => {
       
@@ -21,6 +25,7 @@ export default function Admin() {
           
         }).then((response) => {
           console.log(response);
+          
         })
         
     }
@@ -28,12 +33,15 @@ export default function Admin() {
 
         Axios.post("http://localhost:3001/register", {
           username: usernameReg,
-          role: 'medico',
+          role: 'paciente',
           password: passwordReg,
           
         }).then((response) => {
           console.log(response);
+          
         })
+        
+        ;
         
     }
 
@@ -42,7 +50,8 @@ export default function Admin() {
     Axios.post("http://localhost:3001/consultas", {
       medico:medicoReg,
       paciente:pacienteReg,
-      date:dateReg
+      date:dateReg,
+      farmacos:faramcosReg
     }).then((response) => {
       console.log(response);
     })
@@ -72,6 +81,8 @@ export default function Admin() {
                 <input type="text" onChange={(e)=>{setPacienteReg(e.target.value)}}/>
                 <label >Data - YYYY-MM-DD</label>
                 <input type="date" onChange={(e)=>{setDateReg(e.target.value)}}/>
+                <label >Farmacos</label>
+                <input type="text" onChange={(e)=>{setFaramcosReg(e.target.value)}}/>
                 <button onClick={registerConsulta}>Registar consulta</button>
                 
                 

@@ -136,12 +136,13 @@ app.post('/login', (req, res) => {
     const medico = req.body.medico;
     const paciente = req.body.paciente;
     const date = req.body.date;
+    const farmacos = req.body.farmacos;
   
     if (!medico || !paciente || !date) {
       return res.status(400).send({ error: 'Medico, paciente, and date are required' });
     }
   
-    db.query("INSERT INTO consulta (`id_medicos`, `id_paciente`, `data`) VALUES (?, ?, ?)", [medico, paciente, date], (err, result) => {
+    db.query("INSERT INTO consulta (`id_medicos`, `id_paciente`, `data`, `farmacos_cons`) VALUES (?, ?, ?, ?)", [medico, paciente, date, farmacos], (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).send({ error: 'Failed to register consulta' });
@@ -151,6 +152,7 @@ app.post('/login', (req, res) => {
       res.status(201).send({ message: 'Consulta registered successfully' });
     });
   });
+
 
   app.get('/pacientesficha/:pacientename', (req, res) => {
     const pacientename = req.params.pacientename; 
@@ -199,7 +201,6 @@ app.post('/login', (req, res) => {
 
     if (!paciente) {
       return res.status(400).send({ error: 'Missing paciente parameter' });
-      alert('Paciente not found');
       
     }
   
@@ -216,10 +217,19 @@ app.post('/login', (req, res) => {
       res.send(result);
     });
   });
-
+    
+  app.get('/farmacos', (req, res) => {
+        db.query("SELECT * FROM farmacos", (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send({ error: 'Error fetching farmacos' });
+          }
+      
+          res.send(result);
+        });
+      });
 
   
-
 
   
  

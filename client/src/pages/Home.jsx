@@ -5,6 +5,7 @@ import Medico from "../components/Medico"
 import Admin from "../components/Admin"
 
 
+
 export default function Home() {
 
     const[role, setRole] = useState("")
@@ -23,6 +24,7 @@ export default function Home() {
             {role == "paciente" && <Paciente/>}
             {role == "medico" && <Medico/>}
             {role == "admin" && <Admin/>}
+            
         </div>
     )
 }

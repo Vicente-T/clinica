@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Home from './pages/Home'
 
+
 export default function App() {
   
 
@@ -16,6 +17,8 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route></Route>
+          
         </Routes>
       </BrowserRouter>
       

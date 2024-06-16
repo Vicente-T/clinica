@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
@@ -29,15 +30,24 @@ export default function Register() {
     }
 
     return (
-        <div className='login'>
+      <section>
+        <div className='login-box'>
             <h1>Registration</h1>
-            <label > username </label>
-            <input type="text" onChange={(e)=>{setUsernameReg(e.target.value)}}  />
-            <label > password </label>
-            <input type="text" onChange={(e)=>{setPasswordReg(e.target.value)}}/>
+            <div className="input-box">
+              
+              <input type="text" onChange={(e)=>{setUsernameReg(e.target.value)}}  />
+              <label > username </label>
+            </div>
+
+            <div className="input-box">
+
+              <input type="text" onChange={(e)=>{setPasswordReg(e.target.value)}}/>
+              <label > password </label>     
+            </div>
       
-            <button onClick={register}>Register</button>
+            <button className='login-btn' onClick={register}>Register</button>
         </div>
+      </section>
     )
 
 }

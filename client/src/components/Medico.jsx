@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 
 export default function Medico() {
@@ -6,6 +6,7 @@ export default function Medico() {
     const [medic, setMedic] = useState("");
     const [pacienteinfo, setPacienteinfo] = useState([]);
     const [consultas, setConsultas] = useState([]);
+    const [farmacos, setFarmacos] = useState([]);
 
     Axios.defaults.withCredentials = true;
 
@@ -32,6 +33,20 @@ export default function Medico() {
                 console.error(error);
             });
     }
+
+    useEffect(() => {
+        Axios.get(`http://localhost:3001/farmacos`)
+            .then((response) => {
+                console.log(response);
+                setFarmacos(response.data);
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+
 
     return (
         <div>
@@ -67,6 +82,19 @@ export default function Medico() {
                         </div>
                     );
                 })}
+            </div>
+            <div>
+                <h2>Farmacos</h2>
+
+                {farmacos.map((val, key) => {
+                    return (
+                        <div key={key}>
+                            {val.id}
+                            {val.nome}
+                        </div>
+                    );
+                })}
+
             </div>
         </div>
     )
