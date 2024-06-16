@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 export default function Medico() {
     const [paciente, setPaciente] = useState("");
@@ -7,9 +8,24 @@ export default function Medico() {
     const [pacienteinfo, setPacienteinfo] = useState([]);
     const [consultas, setConsultas] = useState([]);
     const [farmacos, setFarmacos] = useState([]);
+    const navigate = useNavigate();
+
 
     Axios.defaults.withCredentials = true;
 
+    
+
+    const todos = () => {
+        Axios.get("http://localhost:3001/pacientesficha")
+            .then((response) => {
+                console.log(response);
+                setPacienteinfo(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        
+    }
     const search = () => {
         Axios.get(`http://localhost:3001/pacientesficha/${paciente}`)
             .then((response) => {
@@ -53,18 +69,33 @@ export default function Medico() {
             <h1>Medico</h1>
             <div>
                 <h2>Ficha de pacientes</h2>
-                <label>Insira seu nome</label>
-                <input type="text" onChange={(e) => { setPaciente(e.target.value) }} />
-                <button onClick={search}>Search</button>
+                <div>
+                    <label>Insira o nome</label>
+                    <input type="text" onChange={(e) => { setPaciente(e.target.value) }} />
+                    <button onClick={search}>Search</button>
+                </div>
+                <div>
+                    <button onClick={todos}>Mostrar Todos</button>
+                </div>
+                
+                    {pacienteinfo.map((val, key) => {
+                        return (
+                            <div key={key}>
+                                {val.id}
+                                {val.pacientename}
+                                {val.genero}
+                                {val.peso}
+                                {val.alergias}
+                                {val.idade}
 
-                {pacienteinfo.map((val, key) => {
-                    return (
-                        <div key={key}>
-                            {val.id}
-                            {val.pacientename}
-                        </div>
-                    );
-                })}
+                                <button onClick={() => {navigate("/register-ficha")}}>atualizar</button>
+                            </div>
+                        );
+                    })}
+
+
+
+
             </div>
             <div>
                 <h2>Agenda consultas</h2>

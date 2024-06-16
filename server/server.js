@@ -153,6 +153,17 @@ app.post('/login', (req, res) => {
     });
   });
 
+  app.get('/pacientesficha', (req, res) => {
+    db.query("SELECT * FROM pacientes", (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'Error fetching paciente records' });
+      }
+  
+      res.send(result);
+    })
+  })
+
 
   app.get('/pacientesficha/:pacientename', (req, res) => {
     const pacientename = req.params.pacientename; 
@@ -231,7 +242,50 @@ app.post('/login', (req, res) => {
 
   
 
-  
+      app.post('/register-ficha', (req, res) => {
+        console.log(req.body);
+      
+        const pacientename = req.body.pacientename;
+        const genero = " ";
+        const peso = " ";
+        const alergias = " ";
+        const idade = " ";
+      
+        if (!pacientename || !genero || !peso || !alergias || !idade) {
+          return res.status(400).send({ error: 'Medico, paciente, and date are required' });
+        }
+      
+        db.query("INSERT INTO pacientes (`pacientename`, `genero`, `peso`, `alergias`,`idade`) VALUES (?, ?, ?, ?,?)", [pacientename, genero, peso, alergias, idade], (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send({ error: 'Failed to register consulta' });
+          }
+      
+          console.log('Consulta registered successfully');
+          res.status(201).send({ message: 'Consulta registered successfully' });
+        });
+      });
+
+      app.put('/update-ficha/:pacientename', (req, res) => {
+        
+        const pacientename = req.body.pacientename;
+        const genero = req.body.genero;
+        const peso = req.body.peso;
+        const alergias = req.body.alergias;
+        const idade = req.body.idade;
+      
+        db.query("UPDATE pacientes SET pacientename = ?, genero = ?, peso = ?, alergias = ?, idade = ? WHERE pacientename = ?", [pacientename, genero, peso, alergias, idade], (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send({ error: 'Failed to update consulta' });
+          }
+      
+          console.log('Consulta updated successfully');
+          res.status(200).send({ message: 'Consulta updated successfully' });
+        });
+      });
+
+
  
 
 
