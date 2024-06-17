@@ -12,6 +12,22 @@
     backdrop-filter: blur(15px);
 
 }
+
+.login-box-2{
+    position: relative;
+    width: 50%;
+    height: 50%;
+    background: transparent;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: 2px solid rgba(255, 255, 255, .5);
+    backdrop-filter: blur(15px);
+
+}
+
 section{
     justify-content: center;
     display: flex;
@@ -138,4 +154,56 @@ h1{
 
 .login-box .checkbox{
     color: white;
+}
+
+
+.input-box-2{
+    position: relative;
+    width: 310px;
+    
+    border-bottom: 2px solid white;
+    margin: 30px 0;
+}
+
+.input-cover{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20%;
+}
+
+.input-box-2 label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: white;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-box-2 input:focus ~ label,
+.input-box-2 input:valid ~ label{
+    top: -5px;
+}
+
+.input-box-2 input{
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: white;
+    padding: 0 35px 0 5px;
+}
+
+.input-box-2 .icon{
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: white;
+    line-height: 57px;
 }

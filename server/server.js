@@ -97,6 +97,8 @@ app.get('/login', (req, res) => {
     }
 });
 
+
+
 app.post('/login', (req, res) => {
     console.log(req.body);
   
@@ -246,16 +248,18 @@ app.post('/login', (req, res) => {
         console.log(req.body);
       
         const pacientename = req.body.pacientename;
-        const genero = " ";
-        const peso = " ";
-        const alergias = " ";
-        const idade = " ";
+        const genero = req.body.genero;
+        const NomeCompleto = req.body.NomeCompleto;
+        const Contacto = req.body.Contacto;
+        const Email = req.body.Email;
+        const Morada = req.body.Morada;
+        const DataDeNascimento = req.body.DataDeNascimento;
       
-        if (!pacientename || !genero || !peso || !alergias || !idade) {
-          return res.status(400).send({ error: 'Medico, paciente, and date are required' });
+        if (!pacientename || !genero || !NomeCompleto || !Contacto || !Email || !Morada || !DataDeNascimento) {
+          return res.status(400).send({ error: 'All fields are required' });
         }
       
-        db.query("INSERT INTO pacientes (`pacientename`, `genero`, `peso`, `alergias`,`idade`) VALUES (?, ?, ?, ?,?)", [pacientename, genero, peso, alergias, idade], (err, result) => {
+        db.query("INSERT INTO pacientes (`pacientename`, `genero`, `Nome_Completo`, `Contacto`, `email`, `Morada`, `data_de_nascimento`) VALUES (?, ?, ?, ?,?,?,?)", [pacientename, genero, NomeCompleto, Contacto, Email, Morada, DataDeNascimento], (err, result) => {
           if (err) {
             console.error(err);
             return res.status(500).send({ error: 'Failed to register consulta' });
@@ -266,25 +270,7 @@ app.post('/login', (req, res) => {
         });
       });
 
-      app.put('/update-ficha/:pacientename', (req, res) => {
-        
-        const pacientename = req.body.pacientename;
-        const genero = req.body.genero;
-        const peso = req.body.peso;
-        const alergias = req.body.alergias;
-        const idade = req.body.idade;
       
-        db.query("UPDATE pacientes SET pacientename = ?, genero = ?, peso = ?, alergias = ?, idade = ? WHERE pacientename = ?", [pacientename, genero, peso, alergias, idade], (err, result) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).send({ error: 'Failed to update consulta' });
-          }
-      
-          console.log('Consulta updated successfully');
-          res.status(200).send({ message: 'Consulta updated successfully' });
-        });
-      });
-
 
  
 

@@ -147,34 +147,22 @@ export default function Paciente() {
                     <div className="tableconsultas">
                         {consultas.map((val, key) => {
                             return (
-                                <div className="consultas" key={key}>
-                                    
-                                        
-                                        
-                                        
-                                        
-                                    
-                                    <ul >
-                                        <li>
-                                            <p>ID</p>
-                                            {val.id}
-                                        </li>
-                                        
-                                        <li class = "special">
-                                            <p>Paciente</p>    
-                                            {val.id_paciente}
-                                        </li>
-                                        <li  class = "special">
-                                        <p>Medico</p>
-                                            {val.id_medicos}
-                                        </li>
-                                        <li>
-                                        <p>Data</p>
-                                            {val.data}
+                                <table className="m-row" key={key}>
 
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Paciente</th>
+                                        <th>Medico</th>
+                                        <th>Data</th>
+                                    </tr>
+                                    <tr>
+                                        <th>{val.id}</th>
+                                        <th>{val.id_paciente}</th>
+                                        <th>{val.id_medicos}</th>
+                                        <th>{val.data}</th>
+                                    </tr>
+                                    
+                                </table>
                             );
                         })}
                     </div>
