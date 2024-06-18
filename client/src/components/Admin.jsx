@@ -3,8 +3,6 @@ import { useState } from 'react'
 import Axios from 'axios'
 import '../styles/paciente.css'
 import '../styles/header.css'
-
-
 export default function Admin() {
     Axios.defaults.withCredentials = true
     const [usernameReg, setUsernameReg] = useState("");
@@ -19,10 +17,22 @@ export default function Admin() {
     const[showc, setshowc] = useState(false)
     const[showr, setshowr] = useState(false)
     const[showf, setshowf] = useState(false)
+    const[showregistermain, setshowregistermain] = useState(true)
+    const[showregsecon, setshowregsecon] = useState(false)
+
+    const [genero, setGenero] = useState("");
+    const [NomeCompleto, setNomeCompleto] = useState("");
+    const [Contacto, setContato] = useState("");
+    const [Email, setEmail] = useState("");
+    const [Morada, setMorada] = useState("");
+    const [DataDeNascimento, setDataDeNascimento] = useState("");
+
+    const [DataDeNascimento2, setDataDeNascimento2] = useState("");
+    const [Contacto2, setContato2] = useState("");
+    const [Email2, setEmail2] = useState("");
+
 
     const register = () => {
-      
-
         Axios.post("http://localhost:3001/register", {
           username: usernameReg,
           role: 'medico',
@@ -32,7 +42,6 @@ export default function Admin() {
           console.log(response);
           
         })
-        
     }
     const register1 = () => {
 
@@ -40,14 +49,9 @@ export default function Admin() {
           username: usernameReg,
           role: 'paciente',
           password: passwordReg,
-          
         }).then((response) => {
           console.log(response);
-          
         })
-        
-        
-        
     }
 
     const registerConsulta = () => {
@@ -61,6 +65,36 @@ export default function Admin() {
       console.log(response);
     })
     }
+    const handleSubmit = async () => {
+        Axios.post(`http://localhost:3001/register-ficha`, {
+          pacientename: usernameReg,
+          genero: genero,
+          NomeCompleto: NomeCompleto,
+          Contacto: Contacto,
+          Email: Email,
+          Morada: Morada,
+          DataDeNascimento: DataDeNascimento,
+        }) .then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.error(error);
+        });
+        
+      };
+
+      const handleempregados = async () => {
+        Axios.post(`http://localhost:3001/empregados`, {
+            username: usernameReg,
+            DataDeNascimento: DataDeNascimento2,
+            Contacto: Contacto2,
+            Email: Email2
+        }) .then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.error(error);
+        });
+        
+      };
 
     const showProfile = () => {
       if (showp) {
@@ -105,6 +139,25 @@ export default function Admin() {
           setshowr(false)
       }
   }
+
+  const showRegisterMain = () => {
+      if (showregistermain) {
+          setshowregistermain(false)
+          setshowregsecon(true)
+      } else {
+          setshowregistermain(true)
+          setshowregsecon(false)
+      }
+  }
+  const handleshowRegister = () => {
+      if(showregsecon){
+          setshowregsecon(false)
+          setshowregistermain(true)
+      }else{
+          setshowregsecon(true)
+          setshowregistermain(false)
+      }
+  }
     return (
       <section>
           <div className="wrapper">
@@ -142,28 +195,90 @@ export default function Admin() {
 
             {showp &&
             <h1>Profile</h1>
+
             }
-
-
-            {showf &&
+            {showf && showregistermain ? (
+                
+            
             <div className="container">
                 <h2>Registar Medicos</h2>
                 <input type="text" placeholder='Type username...' onChange={(e)=>{setUsernameReg(e.target.value)}}  />           
                 <input type="text" placeholder='Type password...' onChange={(e)=>{setPasswordReg(e.target.value)}}/>
-                <button onClick={register}>Register</button>
+                <button onClick={() => { register(); showRegisterMain(); }}>continue</button>
 
             </div>
-            }
+            ) : null}
 
-            {showr &&
-            <div className="container">
-                <h2>Registar pacientes</h2>
-                <input type="text" placeholder='Type username...' onChange={(e)=>{setUsernameReg(e.target.value)}}  />           
-                <input type="text" placeholder='Type password...' onChange={(e)=>{setPasswordReg(e.target.value)}}/>
-                <button onClick={register1}>Register</button>
+            {showf && showregsecon ? (
+                <div className="container">
+                    <h2>Registar Medicos</h2>
+                    <div className='input-box-2'>
+                        <input type="date" onChange={(e) => setDataDeNascimento2(e.target.value)} />
+                        <label htmlFor="alergias">Data de nascimento</label>
+                    </div>
+                    <div className='input-box-2'>
+                        <input type="text" onChange={(e) => setContato2(e.target.value)} />
+                        <label htmlFor="peso">Contacto</label>
+                     </div>
+                     <div className='input-box-2'>
+                        <input type="email" onChange={(e) => setEmail2(e.target.value)} />
+                        <label htmlFor="idade">email</label>
+                    </div>
+                    <button onClick={() => { handleempregados(); showRegisterMain(); }}>register</button>
+                </div>
+            ) : null}
 
+            {showr && showregistermain ? (
+                <div className="container">
+                    <h2>Registar pacientes</h2>
+                    <input type="text" placeholder='Type username...' onChange={(e)=>{setUsernameReg(e.target.value)}}  />
+                    <input type="text" placeholder='Type password...' onChange={(e)=>{setPasswordReg(e.target.value)}}/>
+                    <button onClick={() => { register1(); showRegisterMain(); }}>continue</button>
+                </div>
+            ) : null}
+
+            {showr && showregsecon ? (
+                <div className="container">
+                    <h2>Registar Pacientes</h2>
+                    <div className='input-cover'>
+              <div className='input-box-2'>
+                <input type="text" onChange={(e) => setNomeCompleto(e.target.value)} />
+                <label htmlFor="genero">Nome Completo</label>
+              </div>
+
+              <div className='input-box-2'> 
+                <input type="text" onChange={(e) => setGenero(e.target.value)} />
+                <label htmlFor="genero">Genero </label>
+              </div>
+              
             </div>
-            }
+
+            <div className='input-cover'>
+              
+              <div className='input-box-2'>
+                <input type="text" onChange={(e) => setContato(e.target.value)} />
+                <label htmlFor="peso">Contacto</label>
+              </div>
+              <div className='input-box-2'>
+                  <input type="text" onChange={(e) => setMorada(e.target.value)} />
+                  <label htmlFor="peso">Morada</label>
+              </div>
+              
+            </div>
+            <div className='input-cover'>
+
+              <div className='input-box-2'>
+                <input type="date" onChange={(e) => setDataDeNascimento(e.target.value)} />
+                <label htmlFor="alergias">Data de nascimento</label>
+              </div>
+              <div className='input-box-2'>
+                <input type="email" onChange={(e) => setEmail(e.target.value)} />
+                <label htmlFor="idade">email</label>
+                </div>
+            </div>
+            <button className='login-btn' onClick={() => { handleSubmit(); handleshowRegister(); }}>Register</button>
+                </div>
+            ) : null}
 
             {showc &&
             <div className="container">

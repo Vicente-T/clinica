@@ -125,4 +125,40 @@
     
 }
 
+.profile{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+   
+}
+
+.profile-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+
+.profile-Name{
+    display: flex;
+    flex-direction: row;
+    gap: 100%;
+    
+}
+
+.profile-name{
+    font-size: 50px;
+    
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-bio{
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 

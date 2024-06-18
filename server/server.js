@@ -166,6 +166,8 @@ app.post('/login', (req, res) => {
     })
   })
 
+  
+
 
   app.get('/pacientesficha/:pacientename', (req, res) => {
     const pacientename = req.params.pacientename; 
@@ -270,11 +272,42 @@ app.post('/login', (req, res) => {
         });
       });
 
+
+
+      app.post('/empregados', (req, res) => {
+        console.log(req.body);
+
+        const username = req.body.username;
+        const DataDeNascimento = req.body.DataDeNascimento;
+        const Contacto = req.body.Contacto;
+        const Email = req.body.Email;
+        db.query("INSERT INTO empregados (empregadosname, Contacto, Email, data_de_nascimento) VALUES (?, ?, ?, ?)", [username, Contacto, Email, DataDeNascimento], (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send({ error: 'Failed to register consulta' });
+          }
       
+          console.log('Consulta registered successfully');
+          res.status(201).send({ message: 'Consulta registered successfully' });
+        });
+      });
 
- 
-
-
+      app.get('/empregados/:username', (req, res) => {
+        const username = req.params.username;
+        if (!username) {
+          return res.status(400).send({ error: 'Missing username parameter' });
+        }
+        db.query("SELECT * FROM empregados WHERE empregadosname = ?", [username], (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send({ error: 'Error fetching empregados record' });
+          }
+          if (result.length === 0) {
+            return res.status(404).send({ error: 'empregados not found' });
+          }
+          res.send(result);
+        });
+      });
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 })

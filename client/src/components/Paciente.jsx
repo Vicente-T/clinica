@@ -11,6 +11,7 @@ export default function Paciente() {
     const[medicoReg, setMedicoReg] = useState("")
     const[dateReg, setDateReg] = useState("")
     const[username, setusername] = useState("")
+    const[pacienteinfo, setPacienteinfo] = useState([]);
 
     const[showp, setshowp] = useState(false)
     const[showc, setshowc] = useState(false)
@@ -28,7 +29,7 @@ export default function Paciente() {
     }, [])
 
     const searchconsultas = () => {
-        Axios.get(`http://localhost:3001/pacienteagenda/${paciente}`)
+        Axios.get(`http://localhost:3001/pacienteagenda/${username}`)
             .then((response) => {
                 console.log(response);
                 setConsultas(response.data);
@@ -36,7 +37,21 @@ export default function Paciente() {
             .catch((error) => {
                 console.error(error);
             });
-        if (!paciente) {
+        if (!username) {
+            alert('Paciente not found');
+        }
+    }
+
+    const search = () => {
+        Axios.get(`http://localhost:3001/pacientesficha/${username}`)
+            .then((response) => {
+                console.log(response);
+                setPacienteinfo(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        if (!username) {
             alert('Paciente not found');
         }
     }
@@ -101,7 +116,10 @@ export default function Paciente() {
             <div className="navside">
             <ul>
                 <li className="list active">
-                    <a  onClick={showProfile}>
+                <a onClick={() => {
+                                        showProfile();
+                                        search();
+                                    }}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="icon" height="1.5em" width="1.5em" viewBox="0 0 512 512"><path fill="#74C0FC" d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
                     <span className="title">Profile</span>
                     </a>
@@ -128,6 +146,35 @@ export default function Paciente() {
             {showp &&
             <div class = "container">
                 <h1>Profile</h1>
+                {pacienteinfo.map((val, key) => {
+                    return <div className="profile" key={key}>
+                        <div className="profile-details">
+                            <div className="profile-Name">
+                                <div className="profile-name">
+                                    <div>{val.id}-</div>
+                                    <div>{val.pacientename}</div>
+                                    
+                                    
+                                </div>
+                                
+                                <div className="profile-img"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" height="15em" width="15em" viewBox="0 0 512 512"><path fill="white" d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
+                                </div>  
+                            </div>
+                            <div className="profile-bio">
+                                <div>Data de nascimento- {val.data_de_nascimento}</div>
+                                <div>Contacto-{val.Contacto}</div>
+                                <div> {val.email}</div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                })}
+                        
             </div> 
             }
             
@@ -137,12 +184,9 @@ export default function Paciente() {
                     <div>
                     <h1>As Suas Consultas</h1>
                     </div>
-                    <div className="inputs">
-                    <label >Insira seu nome</label>
-                    <input type="text" onChange={(e)=>{setPaciente(e.target.value)}} />
-                    </div>
+                
                    <div>
-                    <button onClick={searchconsultas}>search</button>
+                    <button onClick={searchconsultas}>Mostrar Consultas</button>
                    </div>
                     <div className="tableconsultas">
                         {consultas.map((val, key) => {

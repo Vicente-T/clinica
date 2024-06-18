@@ -8,9 +8,11 @@ export default function Medico() {
     const [paciente, setPaciente] = useState("");
     const [medic, setMedic] = useState("");
     const [pacienteinfo, setPacienteinfo] = useState([]);
+    const[medicinfo, setMedicinfo] = useState([]);
     const [consultas, setConsultas] = useState([]);
     const [farmacos, setFarmacos] = useState([]);
     const navigate = useNavigate();
+    const[username, setusername] = useState("")
 
     const[showp, setshowp] = useState(false)
     const[showc, setshowc] = useState(false)
@@ -20,6 +22,14 @@ export default function Medico() {
 
     Axios.defaults.withCredentials = true;
 
+    useEffect(() => {
+        Axios.get("http://localhost:3001/login").then((response) => {
+            if(response.data.loggedIn === true){
+                setusername(response.data.user[0].username)
+                
+            }
+        })
+    }, [])
     
 
     const todos = () => {
@@ -37,16 +47,32 @@ export default function Medico() {
         Axios.get(`http://localhost:3001/pacientesficha/${paciente}`)
             .then((response) => {
                 console.log(response);
-               
                 setPacienteinfo(response.data);
             })
             .catch((error) => {
                 console.error(error);
             });
+        if (!username) {
+            alert('Paciente not found');
+        }
+    }
+
+    const searchmedic = () => {
+        Axios.get(`http://localhost:3001/empregados/${username}`)
+            .then((response) => {
+                console.log(response);
+                setMedicinfo(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        if (!username) {
+            alert('Medic not found');
+        }
     }
 
     const searchconsultas = () => {
-        Axios.get(`http://localhost:3001/medicoagenda/${medic}`)
+        Axios.get(`http://localhost:3001/medicoagenda/${username}`)
             .then((response) => {
                 console.log(response);
                 
@@ -121,7 +147,10 @@ export default function Medico() {
                 <div className="navside">
                     <ul>
                         <li className="list active">
-                            <a  onClick={showProfile}>
+                        <a onClick={() => {
+                                        showProfile();
+                                        searchmedic();
+                                    }}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon" height="1.5em" width="1.5em" viewBox="0 0 512 512"><path fill="#74C0FC" d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
                             <span className="title">Profile</span>
                             </a>
@@ -152,6 +181,34 @@ export default function Medico() {
                 {showp &&
                     <div class = "container">
                         <h1>Profile</h1>
+                        {medicinfo.map((val, key) => {
+                    return <div className="profile" key={key}>
+                        <div className="profile-details">
+                            <div className="profile-Name">
+                                <div className="profile-name">
+                                    <div>{val.id}-</div>
+                                    <div>{val.empregadosname}</div>
+                                    
+                                    
+                                </div>
+                                
+                                <div className="profile-img"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" height="15em" width="15em" viewBox="0 0 512 512"><path fill="white" d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z"/></svg>
+                                </div>  
+                            </div>
+                            <div className="profile-bio">
+                                <div>Data de nascimento- {val.data_de_nascimento}</div>
+                                <div>Contacto-{val.Contacto}</div>
+                                <div> {val.Email}</div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                })}
                     </div> 
                 }
             
@@ -208,12 +265,9 @@ export default function Medico() {
             {showc &&
             <div className="container">
                 <h2>Agenda consultas</h2>
-                <div>
-                    <label>Insira seu nome</label>
-                    <input type="text" onChange={(e) => { setMedic(e.target.value) }} />
-                </div>
+                
                 <div className="btnconsultas">
-                    <button  onClick={searchconsultas}>Search</button>
+                    <button  onClick={searchconsultas}>Mostrar consultas</button>
                 </div>
                 
 
