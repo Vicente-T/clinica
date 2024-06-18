@@ -9,10 +9,14 @@
     border-radius: 10px;
     border-left:5px solid  white;
     list-style: none;
-    transition: width0.5s;
+    transition: width 0.5s;
     opacity: 0.85;
 }
 
+@media (max-width: 360px){
+    
+    
+}
 .navside ul{
    
     width: 100%;

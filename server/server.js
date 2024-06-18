@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+require('dotenv').config();
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -35,10 +36,10 @@ app.use(
 
 
 const db = mysql.createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: 'ippo',
-    database: 'authentication',
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 app.post('/register', (req, res) => {
@@ -68,19 +69,19 @@ app.post('/register', (req, res) => {
 
 
 const verifyJWT = (req, res, next) => {
-    const token = req.headers['x-access-token'];
-    if (!token) {
-        res.send("We need a token, please give it to us next time");
-    } else {
-        jwt.verify(token, 'supersecret', (err, decoded) => {
-            if (err) {
-                res.json({ auth: false, message: 'Failed to authenticate' });
-            } else {  
-                req.userId = decoded.id;
-                next();
-            }
-        })
-    }
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    res.send("We need a token, please give it to us next time");
+  } else {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        res.json({ auth: false, message: 'Failed to authenticate' });
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    });
+  }
 }
 
 app.get("/isUserAuth", verifyJWT ,(req, res) => {
@@ -308,6 +309,7 @@ app.post('/login', (req, res) => {
           res.send(result);
         });
       });
+      
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 })
