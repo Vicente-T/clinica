@@ -13,7 +13,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 const app = express();
-
+   
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -34,13 +34,9 @@ app.use(
     }
 }))
 
+const urlDB = `mysql://${process.env.MYSQLUSER}:${process.env.MYSQL_ROOT_PASSWORD}@${process.env.RAILWAY_TCP_PROXY_DOMAIN}:${process.env.RAILWAY_TCP_PROXY_PORT}}/${process.env.MYSQL_DATABASE}`
+const db = mysql.createConnection({urlDB});
 
-const db = mysql.createConnection({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-});
 
 app.post('/register', (req, res) => {
     console.log(req.body);
