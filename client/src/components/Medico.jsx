@@ -44,7 +44,7 @@ export default function Medico() {
         
     }
     const search = () => {
-        Axios.get(`http://localhost:3001/pacientesficha/${paciente}`)
+        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/pacientesficha/${paciente}`)
             .then((response) => {
                 console.log(response);
                 setPacienteinfo(response.data);
@@ -58,7 +58,7 @@ export default function Medico() {
     }
 
     const searchmedic = () => {
-        Axios.get(`http://localhost:3001/empregados/${username}`)
+        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/empregados/${username}`)
             .then((response) => {
                 console.log(response);
                 setMedicinfo(response.data);
@@ -72,7 +72,7 @@ export default function Medico() {
     }
 
     const searchconsultas = () => {
-        Axios.get(`http://localhost:3001/medicoagenda/${username}`)
+        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/medicoagenda/${username}`)
             .then((response) => {
                 console.log(response);
                 
