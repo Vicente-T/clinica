@@ -28,7 +28,7 @@ export default function Register() {
         alert("preencha todos os campos")
         return
       }
-        Axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {
+        Axios.post("http://localhost:3001/register", {
           username: usernameReg,
           password: passwordReg,
           role: 'paciente',
@@ -43,7 +43,7 @@ export default function Register() {
     }
 
     const handleSubmit = async () => {
-      Axios.post(`${process.env.REACT_APP_BACKEND_URL}/register-ficha`, {
+      Axios.post(`http://localhost:3001/register-ficha`, {
         pacientename: usernameReg,
         genero: genero,
         NomeCompleto: NomeCompleto,

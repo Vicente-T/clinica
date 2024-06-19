@@ -13,7 +13,7 @@ export default function Login() {
   const [loginStatus, setLoginStatus] = useState(false);
 
   useEffect(() => {
-    Axios.get(`${process.env.REACT_APP_BACKEND_URL}/login`).then((response) => {
+    Axios.get("http://localhost:3001/login").then((response) => {
       if(response.data.loggedIn === true){ 
         setLoginStatus(response.data.user[0].username)       
       }
@@ -21,7 +21,7 @@ export default function Login() {
   }, [])
 
   const login = () => {
-    Axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, {
+    Axios.post("http://localhost:3001/login", {
       username: username,
       password: password,
     }).then((response) => {
@@ -38,7 +38,7 @@ export default function Login() {
   }
 
   const userAuthenticated = () => {
-    Axios.get(`${process.env.REACT_APP_BACKEND_URL}/isUserAuth`,{
+    Axios.get("http://localhost:3001/isUserAuth",{
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },

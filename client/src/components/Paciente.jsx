@@ -6,6 +6,7 @@ import '../styles/header.css'
 
 export default function Paciente() {
     const CurrentDate = new Date();
+    const [paciente,setPaciente] = useState("");
     const [consultas, setConsultas] = useState([]);
     const[medicoReg, setMedicoReg] = useState("")
     const[dateReg, setDateReg] = useState("")
@@ -19,7 +20,7 @@ export default function Paciente() {
     Axios.defaults.withCredentials = true
 
     useEffect(() => {
-        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/login`).then((response) => {
+        Axios.get("http://localhost:3001/login").then((response) => {
             if(response.data.loggedIn === true){
                 setusername(response.data.user[0].username)
                 
@@ -28,7 +29,7 @@ export default function Paciente() {
     }, [])
 
     const searchconsultas = () => {
-        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/pacienteagenda/${username}`)
+        Axios.get(`http://localhost:3001/pacienteagenda/${username}`)
             .then((response) => {
                 console.log(response);
                 setConsultas(response.data);
@@ -42,7 +43,7 @@ export default function Paciente() {
     }
 
     const search = () => {
-        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/pacientesficha/${username}`)
+        Axios.get(`http://localhost:3001/pacientesficha/${username}`)
             .then((response) => {
                 console.log(response);
                 setPacienteinfo(response.data);
@@ -59,7 +60,7 @@ export default function Paciente() {
             let convertedDate = new Date(dateReg);
             
             if (convertedDate > CurrentDate) {
-                Axios.post(`${process.env.REACT_APP_BACKEND_URL}/consultas`, {
+                Axios.post("http://localhost:3001/consultas", {
                     medico: medicoReg,
                     date: dateReg,
                     paciente: username,

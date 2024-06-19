@@ -12,7 +12,7 @@ export default function Home() {
     Axios.defaults.withCredentials = true
 
     useEffect(() => {
-        Axios.get(`${process.env.REACT_APP_BACKEND_URL}/login`).then((response) => {
+        Axios.get("http://localhost:3001/login").then((response) => {
             if(response.data.loggedIn === true){
                 setRole(response.data.user[0].role)
             }

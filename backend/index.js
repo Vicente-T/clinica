@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-require('dotenv').config();
+
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -34,8 +34,14 @@ app.use(
     }
 }))
 
-const urlDB = `mysql://${process.env.MYSQLUSER}:${process.env.MYSQL_ROOT_PASSWORD}@${process.env.RAILWAY_TCP_PROXY_DOMAIN}:${process.env.RAILWAY_TCP_PROXY_PORT}}/${process.env.MYSQL_DATABASE}`
-const db = mysql.createConnection({urlDB});
+
+const db = mysql.createConnection({
+  host: 'localhost',  
+  user: 'root',
+  password: 'ippo',
+  database: 'authentication',
+  
+});
 
 
 app.post('/register', (req, res) => {
@@ -69,7 +75,7 @@ const verifyJWT = (req, res, next) => {
   if (!token) {
     res.send("We need a token, please give it to us next time");
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, 'supersecret', (err, decoded) => {
       if (err) {
         res.json({ auth: false, message: 'Failed to authenticate' });
       } else {

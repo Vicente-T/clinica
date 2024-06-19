@@ -33,7 +33,7 @@ export default function Admin() {
 
 
     const register = () => {
-        Axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {
+        Axios.post("http://localhost:3001/register", {
           username: usernameReg,
           role: 'medico',
           password: passwordReg,
@@ -45,7 +45,7 @@ export default function Admin() {
     }
     const register1 = () => {
 
-        Axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {
+        Axios.post("http://localhost:3001/register", {
           username: usernameReg,
           role: 'paciente',
           password: passwordReg,
@@ -56,7 +56,7 @@ export default function Admin() {
 
     const registerConsulta = () => {
       
-    Axios.post(`${process.env.REACT_APP_BACKEND_URL}/consultas`, {
+    Axios.post("http://localhost:3001/consultas", {
       medico:medicoReg,
       paciente:pacienteReg,
       date:dateReg,
@@ -66,7 +66,7 @@ export default function Admin() {
     })
     }
     const handleSubmit = async () => {
-        Axios.post(`${process.env.REACT_APP_BACKEND_URL}/register-ficha`, {
+        Axios.post(`http://localhost:3001/register-ficha`, {
           pacientename: usernameReg,
           genero: genero,
           NomeCompleto: NomeCompleto,
@@ -83,7 +83,7 @@ export default function Admin() {
       };
 
       const handleempregados = async () => {
-        Axios.post(`${process.env.REACT_APP_BACKEND_URL}/empregados`, {
+        Axios.post(`http://localhost:3001/empregados`, {
             username: usernameReg,
             DataDeNascimento: DataDeNascimento2,
             Contacto: Contacto2,
