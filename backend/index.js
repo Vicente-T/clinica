@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 
-
+require('dotenv').config()
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('cookie-session');
@@ -13,6 +13,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 const app = express();
+
    
 app.use(express.json());
 app.use(cors({
@@ -36,10 +37,10 @@ app.use(
 
 
 const db = mysql.createConnection({
-  host: 'localhost',  
-  user: 'root',
-  password: 'ippo',
-  database: 'authentication',
+  host: process.env.DB_HOST,  
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   
 });
 
@@ -75,7 +76,7 @@ const verifyJWT = (req, res, next) => {
   if (!token) {
     res.send("We need a token, please give it to us next time");
   } else {
-    jwt.verify(token, 'supersecret', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         res.json({ auth: false, message: 'Failed to authenticate' });
       } else {
@@ -119,7 +120,7 @@ app.post('/login', (req, res) => {
         bcrypt.compare(password, result[0].password, (error, response) => {
           if (response) {
             const id = result[0].id;
-            const token = jwt.sign({ id }, 'supersecret', {
+            const token = jwt.sign({ id },  process.env.JWT_SECRET, {
               expiresIn: 300
             });
             req.session.user = result;
